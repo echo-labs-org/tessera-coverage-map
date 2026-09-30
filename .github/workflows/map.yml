@@ -48,6 +48,17 @@ jobs:
       - name: Make HTML
         run: mv globe.html index.html && mv tessera_coverage.png map.png
 
+      # The NEON terrestrial sites overlay lives in neon-layer.js so it
+      # survives index.html being regenerated above. Expose the globe to it
+      # and load it; the greps fail the run if the upstream viewer changes
+      # shape, rather than silently dropping the layer.
+      - name: Add NEON sites layer
+        run: |
+          grep -q 'const globe = Globe()' index.html
+          grep -q '</body>' index.html
+          sed -i 's/const globe = Globe()/const globe = window.globe = Globe()/' index.html
+          sed -i 's#</body>#    <script type="module" src="neon-layer.js"></script>\n</body>#' index.html
+
       - name: Commit and push if it changed
         uses: stefanzweifel/git-auto-commit-action@v5
         with:

@@ -593,7 +593,7 @@
         }
 
         // Initialize globe
-        const globe = Globe()
+        const globe = window.globe = Globe()
             (document.getElementById('globeViz'))
             .globeImageUrl('//unpkg.com/three-globe/example/img/earth-blue-marble.jpg')
             .bumpImageUrl('//unpkg.com/three-globe/example/img/earth-topology.png')
@@ -735,5 +735,6 @@
         globe.controls().autoRotate = false;
         globe.controls().enableZoom = true;
     </script>
+    <script type="module" src="neon-layer.js"></script>
 </body>
 </html>
